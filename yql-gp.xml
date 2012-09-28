@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<table xmlns="http://query.yahooapis.com/v1/schema/table.xsd"> 
+    <meta> 
+        <author>http://gplus.to/davidayalas</author> 
+        <documentationURL></documentationURL> 
+    </meta> 
+    <bindings> 
+        <select itemPath="" produces="XML"> 
+            <urls> 
+                <url></url> 
+            </urls> 
+            <inputs> 
+				<key id="user" type="xs:string" paramType="variable" required="true"/>
+            </inputs> 
+ 
+            <execute><![CDATA[
+				var gplus = {
+					getTitleDesc : function(item){
+						var r = {};
+						r.title = "";
+						if(item[4].length>0){
+							r.title = item[20].replace(/\s/g," ");
+							var link;
+							r.link="";	
+							if(r.title.indexOf("http")>-1){
+								link = r.title.slice(r.title.indexOf("http"),r.title.slice(r.title.indexOf("http")).indexOf(" "));
+								r.link = link;
+							}
+							r.desc = "";
+						}
+
+						r.title = item[11][0] && item[11][0][3] ? r.title + (r.title.length>0?" - ":"") + item[11][0][3] : r.title;
+						r.desc = item[11][0] && item[11][0][21] ?  item[11][0][21] : "";
+						if(!r.link){
+							r.link = item[11][0] && item[11][0][24] && item[11][0][24][1] ? item[11][0][24][1] : "";
+						}
+						r.date = this.getPubDate(item[5]);
+						return r;
+					},	
+					getPubDate : function(_date){
+						var d = new Date(_date);
+						var s = [];
+						s.push(['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()],","); 
+						s.push(d.getDate());
+						s.push(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]);
+						s.push(d.getFullYear(),d.getUTCHours()+":"+d.getUTCMinutes());
+						return s.join(" ");
+					},
+					exec : function(_user){
+						var query = null; 
+						if(_user){
+							var searchScript = "AF_initDataCallback({key: '4', ";
+							query = y.query("select * from html where url=@url and xpath=\"//script\"",{url:'https://plus.google.com/'+_user+'/posts'}); 
+
+							var _xml = <rss />,c;
+							var data = null;
+							for(var _item in query.results.script) {
+								c = query.results.script[_item].text().toString();
+								if(c.indexOf(searchScript)>-1){
+									c = c.slice(c.indexOf("data:")+5);
+									c = c.slice(0,c.lastIndexOf("});"))
+									data = c;
+									break;
+								}
+							}
+							if(data){
+								data = eval(data);
+								var d;
+								for(var i=0,z=data[0].length;i<z;i++){
+									d = gplus.getTitleDesc(data[0][i]);
+									_xml.rss += <item>
+													<title>{d.title}</title>
+													<description>{d.desc}</description>
+													<link>{d.link}</link>
+													<pubDate>{d.date}</pubDate>
+												</item>
+								}
+							}
+
+							return _xml;
+						}
+					}
+				}
+				
+				response.object = gplus.exec(user);
+				
+            ]]></execute> 
+        </select> 
+ 
+     </bindings> 
+</table>    
+ 
