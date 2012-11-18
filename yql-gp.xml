@@ -24,15 +24,15 @@
 							r.link="";	
 							if(r.title.indexOf("http")>-1){
 								var lastpos = r.title.length; 
-								if(r.title.slice(r.title.indexOf("http")).indexOf(" ")>-1){
-									lastpos = r.title.slice(r.title.indexOf("http")).indexOf(" ");
+								var httppos = r.title.indexOf("http");
+								if(r.title.slice(httppos).indexOf(" ")>-1){
+									lastpos = r.title.slice(httppos).indexOf(" ");
 								}
-								link = r.title.slice(r.title.indexOf("http"),lastpos);
+								link = r.title.slice(httppos,httppos+lastpos);
 								r.link = link;
 							}
 							r.desc = "";
 						}
-
 						r.title = item[11][0] && item[11][0][3] ? r.title + (r.title.length>0?" - ":"") + item[11][0][3] : r.title;
 						r.desc = item[11][0] && item[11][0][21] ?  item[11][0][21] : "";
 						if(!r.link){
