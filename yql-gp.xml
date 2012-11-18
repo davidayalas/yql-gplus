@@ -10,12 +10,13 @@
                 <url></url> 
             </urls> 
             <inputs> 
-				<key id="user" type="xs:string" paramType="variable" required="true"/>
+				<key id="user" type="xs:string" paramType="variable" required="true" />
+				<key id="linkToPost" type="xs:string" paramType="variable" required="false" />
             </inputs> 
  
             <execute><![CDATA[
 				var gplus = {
-					getTitleDesc : function(item){
+					getTitleDesc : function(item,link2post){
 						var r = {};
 						r.title = "";
 						if(item[4].length>0){
@@ -33,10 +34,15 @@
 							}
 							r.desc = "";
 						}
+
 						r.title = item[11][0] && item[11][0][3] ? r.title + (r.title.length>0?" - ":"") + item[11][0][3] : r.title;
 						r.desc = item[11][0] && item[11][0][21] ?  item[11][0][21] : "";
 						if(!r.link){
 							r.link = item[11][0] && item[11][0][24] && item[11][0][24][1] ? item[11][0][24][1] : "";
+						}
+
+						if(r.link==null || r.link==undefined || link2post==true){
+							r.link = 'https://plus.google.com/'+item[21];
 						}
 						r.date = this.getPubDate(item[5]);
 						return r;
@@ -50,8 +56,8 @@
 						s.push(d.getFullYear(),d.getUTCHours()+":"+d.getUTCMinutes());
 						return s.join(" ");
 					},
-					exec : function(_user){
-						var query = null; 
+					exec : function(_user,link2post){
+						var query = null;
 						if(_user){
 							var searchScript = "AF_initDataCallback({key: '4', ";
 							query = y.query("select * from html where url=@url and xpath=\"//script\"",{url:'https://plus.google.com/'+_user+'/posts'}); 
@@ -68,10 +74,15 @@
 								}
 							}
 							if(data){
+								if(parseInt(link2post)==1){
+									link2post = true;
+								}else{
+									link2post = false;
+								}
 								data = eval(data);
 								var d;
 								for(var i=0,z=data[0].length;i<z;i++){
-									d = gplus.getTitleDesc(data[0][i]);
+									d = gplus.getTitleDesc(data[0][i],link2post);
 									_xml.rss += <item>
 													<title>{d.title}</title>
 													<description>{d.desc}</description>
@@ -86,7 +97,7 @@
 					}
 				}
 				
-				response.object = gplus.exec(user);
+				response.object = gplus.exec(user,linkToPost);
 				
             ]]></execute> 
         </select> 
