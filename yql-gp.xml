@@ -23,7 +23,11 @@
 							var link;
 							r.link="";	
 							if(r.title.indexOf("http")>-1){
-								link = r.title.slice(r.title.indexOf("http"),r.title.slice(r.title.indexOf("http")).indexOf(" "));
+								var lastpos = r.title.length; 
+								if(r.title.slice(r.title.indexOf("http")).indexOf(" ")>-1){
+									lastpos = r.title.slice(r.title.indexOf("http")).indexOf(" ");
+								}
+								link = r.title.slice(r.title.indexOf("http"),lastpos);
 								r.link = link;
 							}
 							r.desc = "";
