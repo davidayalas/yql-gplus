@@ -81,14 +81,16 @@
 								}
 								data = eval(data);
 								var d;
-								for(var i=0,z=data[0].length;i<z;i++){
-									d = gplus.getTitleDesc(data[0][i],link2post);
-									_xml.rss += <item>
-													<title>{d.title}</title>
-													<description>{d.desc}</description>
-													<link>{d.link}</link>
-													<pubDate>{d.date}</pubDate>
-												</item>
+								for(var i=0,z=data[7].length;i<z;i++){
+									if(data[7][i][0]==1002){
+										d = gplus.getTitleDesc(data[7][i][1]["33558957"],link2post);
+										_xml.rss += <item>
+														<title>{d.title}</title>
+														<description>{d.desc}</description>
+														<link>{d.link}</link>
+														<pubDate>{d.date}</pubDate>
+													</item>
+									}
 								}
 							}
 
