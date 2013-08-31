@@ -37,18 +37,24 @@
 
 						//r.title = item[11][0] && item[11][0][3] ? r.title + (r.title.length>0?" - ":"") + item[11][0][3] : r.title;
 						//r.desc = item[11][0] && item[11][0][21] ?  item[11][0][21] : "";
+						//r.link = item[11][0] && item[11][0][24] && item[11][0][24][1] ? item[11][0][24][1] : "";
 
-						r.title = item[97] && item[97][2] && item[97][2]["40154698"] && item[97][2]["40154698"][2] ? item[97][2]["40154698"][2]: r.title;
-						r.desc = item[97] && item[97][2] && item[97][2]["40154698"] && item[97][2]["40154698"][3] ? item[97][2]["40154698"][3]: r.desc;
+						if(item[97] && item[97][2] && item[97][2]["40154698"]){
+							r.title = item[97][2]["40154698"][2];
+							r.desc = item[97][2]["40154698"][3];
+							r.link = item[97][2]["40154698"][0];
+						}
 						
-						if(!r.link){
-							//r.link = item[11][0] && item[11][0][24] && item[11][0][24][1] ? item[11][0][24][1] : "";
-							r.link = item[97] && item[97][2] && item[97][2]["40154698"] && item[97][2]["40154698"][0] ? item[97][2]["40154698"][0]: "";
+						if(item[97] && item[97][7] && item[97][7]["40154698"]){
+							r.link = item[97] && item[97][7] && item[97][7]["40154698"][0];
+							r.title = item[97] && item[97][7] && item[97][7]["40154698"][2];
+							r.desc = item[97] && item[97][7] && item[97][7]["40154698"][3];
 						}
 
 						if(r.link==null || r.link==undefined || link2post==true){
 							r.link = 'https://plus.google.com/'+item[21];
 						}
+
 						r.date = this.getPubDate(item[5]);
 						return r;
 					},	
