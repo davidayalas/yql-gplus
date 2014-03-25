@@ -35,26 +35,25 @@
 							r.desc = "";
 						}
 
-						//r.title = item[11][0] && item[11][0][3] ? r.title + (r.title.length>0?" - ":"") + item[11][0][3] : r.title;
-						//r.desc = item[11][0] && item[11][0][21] ?  item[11][0][21] : "";
-						//r.link = item[11][0] && item[11][0][24] && item[11][0][24][1] ? item[11][0][24][1] : "";
-
-						if(item[97] && item[97][2] && item[97][2]["40154698"]){
-							r.title = item[97][2]["40154698"][2];
-							r.desc = item[97][2]["40154698"][3];
-							r.link = item[97][2]["40154698"][0];
-						}else if(item[97] && item[97][7] && item[97][7]["40154698"]){
-							r.link = item[97] && item[97][7] && item[97][7]["40154698"][0];
-							r.title = item[97] && item[97][7] && item[97][7]["40154698"][2];
-							r.desc = item[97] && item[97][7] && item[97][7]["40154698"][3];
-						}else if(item[97] && item[97][7] && item[97][7]["42861421"]){
-							r.link = item[97] && item[97][7] && item[97][7]["42861421"][0];
-							r.title = item[97] && item[97][7] && item[97][7]["42861421"][2];
-							r.desc = item[97] && item[97][7] && item[97][7]["42861421"][3];
-						}else if(item[97] && item[97][7] && item[97][7]["39748951"]){
-							r.link = item[97] && item[97][7] && item[97][7]["39748951"][0];
-							r.title = item[97] && item[97][7] && item[97][7]["39748951"][2];
-							r.desc = item[97] && item[97][7] && item[97][7]["39748951"][3];
+						if(item[97]){
+							if(item[97][2] && item[97][2]["40154698"]){
+								r.title = item[97][2]["40154698"][2];
+								r.desc = item[97][2]["40154698"][3];
+								r.link = item[97][2]["40154698"][0];
+							}else if(item[97][7] && item[97][7]["40154698"]){
+								r.link = item[97][7]["40154698"][0];
+								r.title = item[97][7]["40154698"][2];
+								r.desc = item[97][7]["40154698"][3];
+							}else if(item[97][7] && item[97][7]["42861421"]){
+								r.link = item[97][7]["42861421"][0];
+								r.title = item[97][7]["42861421"][2];
+								r.desc = item[97][7]["42861421"][3];
+							}else if(item[97][7] && item[97][7]["39748951"]){
+								r.link = item[97][7]["39748951"][0];
+								r.title = item[97][7]["39748951"][2];
+								r.desc = item[97][7]["39748951"][3];
+							}
+							r.desc = r.desc || "";
 						}
 
 						if(r.link==null || r.link==undefined || link2post==true){
