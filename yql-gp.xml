@@ -71,7 +71,7 @@
 						s.push(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]);
 						s.push(d.getFullYear(),d.getUTCHours()+":"+d.getUTCMinutes());
 						return s.join(" ");
-					},
+					},				
 					exec : function(_user,link2post){
 						var query = null;
 						if(_user){
@@ -95,11 +95,13 @@
 								}else{
 									link2post = false;
 								}
+
 								data = eval(data);
+
 								var d;
 								for(var i=0,z=data[7].length;i<z;i++){
 									if(data[7][i][0]==1002){
-										d = gplus.getTitleDesc(data[7][i][1]["33558957"],link2post);
+										d = gplus.getTitleDesc(data[7][i][6]["33558957"],link2post);
 										_xml.rss += <item>
 														<title>{d.title}</title>
 														<description>{d.desc}</description>
